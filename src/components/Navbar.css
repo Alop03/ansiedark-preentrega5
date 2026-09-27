@@ -58,7 +58,8 @@
 }
 
 .navbar__categorias a:hover::after,
-.navbar__categorias a:focus-visible::after {
+.navbar__categorias a:focus-visible::after,
+.navbar__enlace--activo::after {
     transform: scaleX(1);
     transform-origin: left;
 }

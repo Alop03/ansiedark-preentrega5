@@ -97,6 +97,32 @@
     font-size: 0.78rem;
 }
 
+.producto__enlace {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1.5rem;
+    padding: 0.7rem 1rem;
+    border: 1px solid #651c32;
+    background-color: transparent;
+    color: #651c32;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition:
+        background-color 180ms ease,
+        color 180ms ease;
+}
+
+.producto__enlace:hover,
+.producto__enlace:focus-visible {
+    background-color: #651c32;
+    color: #f8fbca;
+}
+
 @media (max-width: 900px) {
     .productos {
         grid-template-columns: repeat(2, minmax(0, 1fr));

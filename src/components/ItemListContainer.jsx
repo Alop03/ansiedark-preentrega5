@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
 import { getProducts } from "../mock/asyncMock"
 import ItemList from "./ItemList"
 import "./ItemListContainer.css"
 
 // Obtiene los productos, administra sus estados y delega su presentación.
 function ItemListContainer({ greeting }) {
+    const { categoryId } = useParams()
+    
     const [items, setItems] = useState([])
     const [cargando, setCargando] = useState(true)
     const [error, setError] = useState("")
@@ -13,7 +16,8 @@ function ItemListContainer({ greeting }) {
     useEffect(() => {
         async function cargarProductos() {
             try {
-                const productosRecibidos = await getProducts()
+                const productosRecibidos = 
+                    await getProducts(categoryId)
                 setItems(productosRecibidos)
             } catch {
                 setError(
@@ -25,7 +29,7 @@ function ItemListContainer({ greeting }) {
         }
 
         cargarProductos()
-    }, [])
+    }, [categoryId])
 
     return (
         <section

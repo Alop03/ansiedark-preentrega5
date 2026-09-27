@@ -63,11 +63,18 @@ const productos = [
 ]
 
 
-// Simula una petición que devuelve el catálogo completo.
-function getProducts() {
+// Devuelve el catálogo completo o lo filtra por la categoría recibida.
+function getProducts(categoryId) {
     return new Promise((resolve) => {
         setTimeout(() => {
-            resolve(productos)
+            const productosFiltrados = categoryId
+                ? productos.filter(
+                    (producto) =>
+                        producto.category === categoryId,
+                )
+                : productos
+
+            resolve(productosFiltrados)
         }, 2000)
     })
 }

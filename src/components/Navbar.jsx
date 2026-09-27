@@ -1,33 +1,55 @@
+import { Link, NavLink } from "react-router-dom"
 import CartWidget from "./CartWidget"
 import "./Navbar.css"
 
-// Navegación principal con las categorías reales de la joyería.
+// Navegación principal conectada con las rutas del catálogo.
 function Navbar() {
+    function obtenerClaseEnlace({ isActive }) {
+        return isActive
+            ? "navbar__enlace navbar__enlace--activo"
+            : "navbar__enlace"
+    }
+
     return (
         <header className="encabezado">
             <nav
                 className="navbar"
                 aria-label="Navegación principal"
             >
-                <a
+                <Link
                     className="navbar__marca"
-                    href="#inicio"
+                    to="/"
                     aria-label="Ansiedark, ir al inicio"
                 >
                     Ansiedark
-                </a>
+                </Link>
 
                 <ul className="navbar__categorias">
                     <li>
-                        <a href="#anillos">Anillos</a>
+                        <NavLink
+                            className={obtenerClaseEnlace}
+                            to="/category/anillos"
+                        >
+                            Anillos
+                        </NavLink>
                     </li>
 
                     <li>
-                        <a href="#collares">Collares</a>
+                        <NavLink
+                            className={obtenerClaseEnlace}
+                            to="/category/collares"
+                        >
+                            Collares
+                        </NavLink>
                     </li>
 
                     <li>
-                        <a href="#pulseras">Pulseras</a>
+                        <NavLink
+                            className={obtenerClaseEnlace}
+                            to="/category/pulseras"
+                        >
+                            Pulseras
+                        </NavLink>
                     </li>
                 </ul>
 

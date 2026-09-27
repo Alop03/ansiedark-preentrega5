@@ -1,6 +1,9 @@
-// Presenta la información resumida de un producto.
+import { Link } from "react-router-dom"
+
+// Presenta la información resumida y enlaza al detalle del producto.
 function Item({ item }) {
     const {
+        id,
         name,
         price,
         category,
@@ -35,6 +38,13 @@ function Item({ item }) {
                 <p className="producto__precio">
                     {precioFormateado}
                 </p>
+
+                <Link
+                    className="producto__enlace"
+                    to={`/item/${id}`}
+                >
+                    Ver detalle
+                </Link>
             </div>
         </article>
     )
