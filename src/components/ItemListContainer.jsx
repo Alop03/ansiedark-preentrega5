@@ -15,6 +15,10 @@ function ItemListContainer({ greeting }) {
     // La petición se ejecuta una sola vez cuando se monta el componente.
     useEffect(() => {
         async function cargarProductos() {
+            setCargando(true)
+            setError("")
+            setItems([])
+            
             try {
                 const productosRecibidos = 
                     await getProducts(categoryId)
@@ -73,9 +77,16 @@ function ItemListContainer({ greeting }) {
                 </p>
             )}
 
-            {!cargando && !error && (
+            {!cargando && !error && items.length === 0 && (
+                <p className="catalogo__estado">
+                    No encontramos joyas en esta categoría.
+                </p>
+            )}
+
+            {!cargando && !error && items.length > 0 && (
                 <ItemList items={items} />
             )}
+
         </section>
     )
 }

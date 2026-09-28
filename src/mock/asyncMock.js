@@ -46,6 +46,7 @@ const productos = [
         price: 1690,
         category: "pulseras",
        img: "https://iterapic.com/jewelry/bracalet-2.jpg",
+       stock: 10,
         description:
             "Pulsera flexible de eslabones delicados para combinar todos los días.",
     },
