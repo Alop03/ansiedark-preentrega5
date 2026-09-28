@@ -12,7 +12,7 @@ function ItemListContainer({ greeting }) {
     const [cargando, setCargando] = useState(true)
     const [error, setError] = useState("")
 
-    // La petición se ejecuta una sola vez cuando se monta el componente.
+    // La petición se repite cuando cambia la categoría de la URL.
     useEffect(() => {
         async function cargarProductos() {
             setCargando(true)

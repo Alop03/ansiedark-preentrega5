@@ -45,8 +45,8 @@ const productos = [
         name: "Pulsera Vértigo",
         price: 1690,
         category: "pulseras",
-       img: "https://iterapic.com/jewelry/bracalet-2.jpg",
-       stock: 10,
+        img: "https://iterapic.com/jewelry/bracalet-2.jpg",
+        stock: 10,
         description:
             "Pulsera flexible de eslabones delicados para combinar todos los días.",
     },
@@ -61,8 +61,6 @@ const productos = [
             "Una pieza de volumen medio con textura y personalidad propia.",
     },
 ]
-
-
 // Devuelve el catálogo completo o lo filtra por la categoría recibida.
 function getProducts(categoryId) {
     return new Promise((resolve) => {
