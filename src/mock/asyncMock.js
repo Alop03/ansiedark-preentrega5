@@ -45,8 +45,7 @@ const productos = [
         name: "Pulsera Vértigo",
         price: 1690,
         category: "pulseras",
-        img: "https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=900&q=80",
-        stock: 10,
+       img: "https://iterapic.com/jewelry/bracalet-2.jpg",
         description:
             "Pulsera flexible de eslabones delicados para combinar todos los días.",
     },
@@ -55,7 +54,7 @@ const productos = [
         name: "Pulsera Ruido",
         price: 1980,
         category: "pulseras",
-        img: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=900&q=80",
+        img: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&w=900&q=80",
         stock: 7,
         description:
             "Una pieza de volumen medio con textura y personalidad propia.",

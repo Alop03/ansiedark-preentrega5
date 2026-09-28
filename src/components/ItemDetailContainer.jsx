@@ -1,97 +1,81 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import { getProducts } from "../mock/asyncMock"
-import ItemList from "./ItemList"
-import "./ItemListContainer.css"
+import { getProductById } from "../mock/asyncMock"
+import ItemDetail from "./ItemDetail"
+import "./ItemDetailContainer.css"
 
-// Obtiene el catálogo completo o la categoría indicada en la URL.
-function ItemListContainer({ greeting }) {
-    const { categoryId } = useParams()
+// Obtiene desde la URL el ID de la joya y solicita su información.
+function ItemDetailContainer() {
+    const { itemId } = useParams()
 
-    const [items, setItems] = useState([])
+    const [item, setItem] = useState(null)
     const [cargando, setCargando] = useState(true)
     const [error, setError] = useState("")
 
     useEffect(() => {
-        async function cargarProductos() {
+        async function cargarProducto() {
             setCargando(true)
             setError("")
-            setItems([])
+            setItem(null)
 
             try {
-                const productosRecibidos =
-                    await getProducts(categoryId)
+                const productoRecibido =
+                    await getProductById(itemId)
 
-                setItems(productosRecibidos)
+                setItem(productoRecibido)
             } catch {
                 setError(
-                    "No pudimos cargar las joyas. Intentá nuevamente.",
+                    "No pudimos encontrar la joya seleccionada.",
                 )
             } finally {
                 setCargando(false)
             }
         }
 
-        cargarProductos()
-    }, [categoryId])
-
-    const tituloCatalogo = categoryId
-        ? `${greeting}: ${categoryId}`
-        : greeting
+        cargarProducto()
+    }, [itemId])
 
     return (
         <section
-            id="catalogo"
-            className="catalogo"
-            aria-labelledby="titulo-catalogo"
+            className="detalle-contenedor"
+            aria-labelledby="titulo-detalle"
         >
-            <header className="catalogo__encabezado">
-                <p className="catalogo__etiqueta">
-                    Suscripción mensual de joyas
+            <header className="detalle-contenedor__encabezado">
+                <p className="detalle-contenedor__etiqueta">
+                    Pieza seleccionada
                 </p>
 
                 <h1
-                    id="titulo-catalogo"
-                    className="catalogo__titulo"
+                    id="titulo-detalle"
+                    className="detalle-contenedor__titulo"
                 >
-                    {tituloCatalogo}
+                    Conocé cada detalle
                 </h1>
-
-                <p className="catalogo__descripcion">
-                    Una selección diferente para combinar,
-                    mezclar y hacer propia.
-                </p>
             </header>
 
             {cargando && (
                 <p
-                    className="catalogo__estado"
+                    className="detalle-contenedor__estado"
                     role="status"
                 >
-                    Preparando la selección...
+                    Preparando el detalle de la joya...
                 </p>
             )}
 
             {error && (
                 <p
-                    className="catalogo__estado catalogo__estado--error"
+                    className="detalle-contenedor__estado detalle-contenedor__estado--error"
                     role="alert"
                 >
                     {error}
                 </p>
             )}
 
-            {!cargando && !error && items.length === 0 && (
-                <p className="catalogo__estado">
-                    No encontramos joyas en esta categoría.
-                </p>
-            )}
-
-            {!cargando && !error && items.length > 0 && (
-                <ItemList items={items} />
+            {!cargando && !error && item && (
+                <ItemDetail item={item} />
             )}
         </section>
     )
 }
 
-export default ItemListContainer
+export default ItemDetailContainer

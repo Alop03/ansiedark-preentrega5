@@ -1,126 +1,196 @@
-# Ansiedark — Pre-entrega 4
+# Ansiedark — Pre-entrega 5
 
-Cuarta pre-entrega del curso de React JS de Coderhouse.
+Quinta pre-entrega del curso de React JS de Coderhouse.
 
-Ansiedark es una propuesta de suscripción mensual de joyas para personas que hacen de su identidad una estética.
+Ansiedark es un e-commerce de joyas desarrollado con React. Su propuesta se basa en una selección mensual de piezas para personas que hacen de su identidad una estética.
 
 ## Objetivo de la entrega
 
-Esta entrega incorpora la vista detallada de una joya mediante una promesa dinámica, manteniendo separadas la obtención de datos, la administración del estado y la presentación visual.
+Esta entrega incorpora la navegación completa del e-commerce mediante React Router.
 
-El proyecto permite:
+La aplicación permite:
 
-- Cargar asincrónicamente un catálogo de joyas.
-- Buscar una joya determinada mediante su ID.
-- Mostrar la información completa del producto seleccionado.
-- Seleccionar una cantidad sin superar el stock disponible.
-- Comunicar visualmente los estados de carga, error y confirmación.
+- Navegar sin recargar completamente la página.
+- Visualizar el catálogo completo.
+- Filtrar productos mediante categorías dinámicas.
+- Acceder al detalle individual de cada joya.
+- Obtener parámetros desde la URL.
+- Mantener un layout compartido en todas las rutas.
+- Mostrar una página 404 para direcciones inexistentes.
+- Redirigir el acceso a una zona no autorizada.
 
 ## Funcionalidades incorporadas
 
-- Función dinámica `getProductById(productId)`.
-- Búsqueda de productos mediante `.find()`.
-- Promesa local con una demora simulada de dos segundos.
-- Resolución de la promesa si el producto existe.
-- Rechazo de la promesa si el ID no corresponde a ningún producto.
-- Manejo de estados con `useState`.
-- Ejecución de la petición con `useEffect`.
-- Uso de `async/await` y `try/catch/finally`.
-- Vista resumida para las tarjetas del catálogo.
-- Vista completa para el detalle del producto.
-- Componente reutilizable para seleccionar cantidades.
-- Controles que respetan el stock disponible.
-- Mensajes visuales de carga, error y confirmación.
-- Diseño adaptable a diferentes tamaños de pantalla.
+- Instalación de `react-router-dom`.
+- Configuración de `BrowserRouter`.
+- Definición de rutas mediante `Routes` y `Route`.
+- Navegación interna con `Link` y `NavLink`.
+- Parámetros dinámicos con `useParams`.
+- Filtrado automático por categoría.
+- Detalles de productos vinculados desde las tarjetas.
+- Layout compartido mediante rutas anidadas.
+- Renderizado de contenido mediante `Outlet`.
+- Navbar, CartWidget y Footer persistentes.
+- Ruta 404 mediante el componente `NotFound`.
+- Redirección mediante `Navigate`.
+- Carga asincrónica de catálogos y detalles.
+- Estados visuales de carga y error.
+- Diseño adaptable a dispositivos móviles.
 
-## Flujo de datos
+## Rutas disponibles
 
-La información de los productos se encuentra en:
+| Ruta | Función |
+|---|---|
+| `/` | Muestra el catálogo completo |
+| `/category/:categoryId` | Filtra los productos por categoría |
+| `/item/:itemId` | Muestra el detalle del producto seleccionado |
+| `/admin` | Simula una zona restringida y redirige al inicio |
+| `*` | Muestra la página de error 404 |
+
+### Ejemplos de categorías
 
 ```text
-src/mock/asyncMock.js
+/category/anillos
+/category/collares
+/category/pulseras
 ```
 
-La función `getProductById` recibe un identificador, busca el producto correspondiente y devuelve una promesa:
+### Ejemplos de productos
 
-```js
-getProductById("anillo-niebla")
+```text
+/item/anillo-niebla
+/item/collar-orbita
+/item/pulsera-vertigo
 ```
 
-La promesa se resuelve después de dos segundos para simular el comportamiento de una petición a una API.
+## Flujo del catálogo
 
-Si el ID existe, devuelve el producto encontrado. Si no existe, rechaza la promesa con un error.
+`ItemListContainer` obtiene `categoryId` desde la URL mediante `useParams`.
 
-Por el momento, el ID se define temporalmente desde `App.jsx`. En una próxima etapa será obtenido dinámicamente desde la URL mediante React Router.
+Si no existe una categoría, solicita todos los productos:
+
+```text
+/
+```
+
+Si existe una categoría, la función `getProducts` filtra la colección antes de resolver la promesa:
+
+```text
+/category/anillos
+```
+
+El efecto depende de `categoryId`, por lo que la carga se ejecuta nuevamente cuando cambia la categoría.
+
+## Flujo del detalle
+
+Cada componente `Item` genera un enlace dinámico utilizando el ID del producto:
+
+```jsx
+<Link to={`/item/${id}`}>
+    Ver detalle
+</Link>
+```
+
+`ItemDetailContainer` obtiene `itemId` mediante `useParams` y ejecuta `getProductById(itemId)`.
+
+La función busca el producto correspondiente mediante `.find()` y devuelve una promesa. Si el producto no existe, la aplicación muestra un mensaje de error.
+
+## Layout compartido
+
+El componente `Layout` mantiene visibles los elementos comunes:
+
+```text
+Layout
+├── Navbar
+│   └── CartWidget
+├── Outlet
+│   └── Contenido de la ruta activa
+└── Footer
+```
+
+`Outlet` permite cambiar el contenido central sin volver a crear la navegación ni el pie de página.
 
 ## Componentes principales
 
+### `Navbar`
+
+Contiene la marca, los enlaces a las categorías y el acceso visual al carrito.
+
+### `CartWidget`
+
+Representa el acceso al carrito, cuya lógica global se incorporará en una próxima etapa.
+
 ### `ItemListContainer`
 
-Solicita la colección completa de productos y administra los estados del catálogo.
+Administra la carga del catálogo y reacciona al parámetro de categoría.
 
 ### `ItemList`
 
-Recibe los productos mediante props y utiliza `.map()` para generar el listado.
+Recibe los productos y genera el listado mediante `.map()`.
 
 ### `Item`
 
-Presenta la información resumida de cada producto:
-
-- Imagen.
-- Categoría.
-- Nombre.
-- Precio.
+Muestra la información resumida de cada joya y enlaza con su detalle.
 
 ### `ItemDetailContainer`
 
-Recibe el ID del producto, ejecuta `getProductById`, administra los estados de carga y error y entrega el resultado a `ItemDetail`.
+Obtiene el ID desde la URL, solicita el producto y administra la carga y los errores.
 
 ### `ItemDetail`
 
-Presenta la información completa de la joya seleccionada:
-
-- Imagen principal.
-- Nombre.
-- Precio.
-- Categoría.
-- Descripción.
-- Stock disponible.
-- Selector de cantidad.
+Presenta la información completa del producto seleccionado.
 
 ### `ItemCount`
 
-Administra la cantidad seleccionada mediante un estado interno.
+Permite elegir una cantidad sin superar el stock disponible.
 
-El contador:
+### `Layout`
 
-- Comienza en una unidad.
-- No permite seleccionar menos de una unidad.
-- No permite superar el stock disponible.
-- Recibe el stock mediante props.
-- Comunica la cantidad seleccionada mediante `onAdd`.
+Mantiene el Navbar, el CartWidget y el Footer en todas las rutas.
+
+### `NotFound`
+
+Informa que la dirección solicitada no existe y ofrece regresar al catálogo.
+
+### `Footer`
+
+Proporciona navegación complementaria y permanece visible en todas las rutas.
 
 ## Separación de responsabilidades
 
-Cada parte del proyecto tiene una responsabilidad específica:
-
 ```text
-getProductById
-    Busca y devuelve un producto mediante una promesa.
+asyncMock
+    Simula la fuente de datos y las peticiones.
+
+ItemListContainer
+    Administra el catálogo y la categoría activa.
+
+ItemList
+    Recorre la colección de productos.
+
+Item
+    Presenta cada tarjeta y genera su enlace.
 
 ItemDetailContainer
-    Ejecuta la promesa y administra el estado.
+    Administra la búsqueda por ID.
 
 ItemDetail
-    Presenta la información completa del producto.
+    Presenta el detalle completo.
 
 ItemCount
     Controla la cantidad seleccionada.
+
+Layout
+    Organiza los elementos persistentes.
+
+App
+    Define la arquitectura de rutas.
 ```
 
 ## Tecnologías utilizadas
 
 - React 19
+- React Router DOM
 - Vite
 - JavaScript
 - CSS
@@ -132,13 +202,13 @@ ItemCount
 Clonar el repositorio:
 
 ```bash
-git clone https://github.com/Alop03/ansiedark-preentrega4.git
+git clone https://github.com/Alop03/ansiedark-preentrega5.git
 ```
 
 Ingresar al proyecto:
 
 ```bash
-cd ansiedark-preentrega4
+cd ansiedark-preentrega5
 ```
 
 Instalar las dependencias:
